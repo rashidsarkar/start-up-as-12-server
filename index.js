@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 5000;
-const secret = process.env.DB_TOKEN;
+const secret = "543251423123123";
 
 // middleware
 app.use(
@@ -52,6 +52,7 @@ const gateman = (req, res, next) => {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
+    const testCollection = client.db("carDatabaseDB").collection("Cars");
     //middlewares
     // verify token
 
@@ -80,6 +81,12 @@ async function run() {
         sameSite: "none",
       });
       res.send({ success: true });
+    });
+
+    ///TODO -  api hare
+    app.get("/api/test", gateman, async (req, res) => {
+      const result = await testCollection.find().toArray();
+      res.send(result);
     });
 
     // //NOTE - Pagination api
